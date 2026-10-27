@@ -8,35 +8,42 @@ export default function Chat() {
   const { messages, sendMessage, status, stop } = useChat();
 
   return (
-    <main className="mx-auto flex max-w-xl flex-col gap-4 p-6">
+    <main className="min-h-screen mx-auto flex max-w-xl flex-col gap-4 p-6">
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           <strong>{message.role === 'user' ? 'Moi' : 'Assistant'} : </strong>
-          {message.role === 'assistant' && status === 'streaming' && <button type="button" onClick={() => stop()}>Stop</button>}
           {message.parts.map((part, i) =>
             part.type === 'text' ? <span key={i}>{part.text}</span> : null
           )}
         </div>
       ))}
 
-    {status === 'submitted' ?
-    <p>Réflexion en cours…</p> : status === 'streaming' ?
-    <p>Réponse en cours…</p> : null}
-
       <form
+        className="sticky bottom-0 bg-black py-4 mt-auto"
         onSubmit={e => {
           e.preventDefault();
-          {status === 'ready' && input !== null && sendMessage({ text: input });}
+          if (status !== 'ready' || input.trim() === '') return;
+          sendMessage({ text: input });
           setInput('');
         }}
       >
-        <input
-          className="w-full rounded border p-2"
-          value={input}
-          placeholder="Pose une question…"
-          onChange={e => setInput(e.currentTarget.value)}
-          disabled={status !== 'ready'}
-        />
+            {status === 'submitted' ?
+    <p>Réflexion en cours…</p> : status === 'streaming' ?
+    <p>Réponse en cours…</p> : null}
+    
+        <div className="flex gap-2">
+          <input
+            className="flex-1 rounded border p-2"
+            value={input}
+            placeholder="Pose une question…"
+            onChange={e => setInput(e.currentTarget.value)}
+          />
+          {status === 'ready' ? (
+            <button type="submit" className="rounded border px-4">Envoyer</button>
+          ) : (
+            <button type="button" className="rounded border px-4" onClick={() => stop()}>Stop</button>
+          )}
+        </div>
       </form>
     </main>
   );
