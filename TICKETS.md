@@ -31,16 +31,16 @@ Appris : désactiver la frappe punit l'utilisateur ; bloquer l'envoi suffit.
 Outil `searchDocuments` déclaré dans la route (délai 2 s, deux documents en
 dur, `stopWhen: isStepCount(5)`). Côté page, un composant `ToolCard` qui lit
 `part.state`, `part.input.query`, `part.output`.
-État : route faite, `ToolCard` écrit, erreur TypeScript « part.input is of
+État : route faite, `ToolCard` écrit, il y avait une erreur TypeScript « part.input is of
 type unknown » malgré `useChat<ChatMessage>()` et le type exporté depuis la
-route avec `InferUITools`. À résoudre d'abord.
+route avec `InferUITools`. L'erreur a été réglée.
 Critères de fin : la carte apparaît avant la réponse, affiche « en cours »
 2 s, puis les documents, puis la réponse du modèle ; « quelle heure est-il ? »
 n'appelle pas l'outil.
 Question d'interface : les documents sont-ils visibles par défaut ou repliés
 derrière un clic ? Pour quel utilisateur, et pourquoi ?
 
-## T4 — L'erreur est un cas normal
+## T4 — L'erreur est un cas normal - EN COURS
 
 Provoquer une erreur (clé fausse, ou `throw` une fois sur deux dans la route).
 Afficher un état d'erreur lisible dans le fil, avec un bouton Réessayer qui
@@ -57,6 +57,8 @@ l'utilisateur peut faire ? Lequel compte le plus pour lui ?
 Défilement automatique vers le bas pendant le streaming ; Entrée envoie,
 Maj+Entrée fait un retour à la ligne (passer l'input en textarea) ; message
 d'accueil qui dit ce que l'assistant sait faire.
+Le Markdown affiché brut : sur ta capture, la réponse contenait des ### et des ** au lieu de titres et de gras.
+Les documents dépliés par défaut : ta réponse à la question d’interface dit « repliés pour un utilisateur lambda », mais ta ToolCard les affiche dépliés.
 Critère de fin : trente secondes d'usage sans souris, rien n'agace.
 Question : les trois choses qui agacent encore.
 
