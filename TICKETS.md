@@ -39,8 +39,20 @@ Critères de fin : la carte apparaît avant la réponse, affiche « en cours »
 n'appelle pas l'outil.
 Question d'interface : les documents sont-ils visibles par défaut ou repliés
 derrière un clic ? Pour quel utilisateur, et pourquoi ?
+Réponse : pour un utilisateur lambda qui veut juste une réponse, repliés ou
+en une ligne de sources en fin de réponse. Si la demande est centrée sur les
+documents, on les montre au fur et à mesure. La longueur et le poids du
+document (images) comptent aussi.
+Appris : une part d'outil est une union discriminée sur `state`
+(`input-streaming` → `input-available` → `output-available` /
+`output-error`) ; en `input-streaming`, `input` peut être `undefined` ; filtrer
+sur un état transitoire fait disparaître la carte. `stopWhen` est un plafond
+de sécurité, pas une consigne : c'est le modèle qui choisit à chaque étape
+d'appeler l'outil ou de répondre ; les `instructions` (prompt système) le
+font s'arrêter de lui-même. Le typage garantit que ça ne plante pas, pas que
+l'interface est juste.
 
-## T4 — L'erreur est un cas normal - FAIT
+## T4 — L'erreur est un cas normal — FAIT
 
 Provoquer une erreur (clé fausse, ou `throw` une fois sur deux dans la route).
 Afficher un état d'erreur lisible dans le fil, avec un bouton Réessayer qui
@@ -51,8 +63,23 @@ par un non-dev, Réessayer fonctionne. Bonus : l'erreur d'un outil
 (`state === 'output-error'`) s'affiche dans la `ToolCard`.
 Question : le message d'erreur dit-il ce qui s'est passé, ou ce que
 l'utilisateur peut faire ? Lequel compte le plus pour lui ?
+Réponse : les deux si possible, en court. Le plus important est l'action
+possible ; « réessayez plus tard » est un terme valise. Savoir si le souci
+vient de l'utilisateur ou non compte aussi.
+Appris : deux niveaux d'erreur. Erreur de requête : toute la réponse échoue,
+se lit dans `status === 'error'`. Erreur d'outil : une seule part échoue, la
+requête continue, se lit dans `part.state === 'output-error'`. Le serveur ne
+transmet pas ses messages d'erreur au navigateur (sécurité) : le texte pour
+l'utilisateur s'écrit côté page. `regenerate()` relance sans dupliquer le
+message, `clearError()` efface sans relancer. Un état non prévu se fait
+passer pour un autre (Stop bloqué en `error`). `'error'` seul dans un `||`
+est truthy, donc toujours vrai ; loi de De Morgan pour inverser une
+condition. `throw` est une instruction, pas une expression. Quota gratuit
+Gemini (429) : chaque étape de la boucle compte comme une requête. Faux modèle
+`MockLanguageModelV4` (`app/api/chat/mock-model.ts`, activé par `MOCK_MODEL`
+dans `.env.local`) pour tester sans appeler Gemini.
 
-## T5 — Finition minimale (optionnel)
+## T5 — Finition minimale (optionnel) — EN COURS
 
 Défilement automatique vers le bas pendant le streaming ; Entrée envoie,
 Maj+Entrée fait un retour à la ligne (passer l'input en textarea) ; message
