@@ -40,7 +40,7 @@ n'appelle pas l'outil.
 Question d'interface : les documents sont-ils visibles par défaut ou repliés
 derrière un clic ? Pour quel utilisateur, et pourquoi ?
 
-## T4 — L'erreur est un cas normal - EN COURS
+## T4 — L'erreur est un cas normal - FAIT
 
 Provoquer une erreur (clé fausse, ou `throw` une fois sur deux dans la route).
 Afficher un état d'erreur lisible dans le fil, avec un bouton Réessayer qui
@@ -57,8 +57,8 @@ l'utilisateur peut faire ? Lequel compte le plus pour lui ?
 Défilement automatique vers le bas pendant le streaming ; Entrée envoie,
 Maj+Entrée fait un retour à la ligne (passer l'input en textarea) ; message
 d'accueil qui dit ce que l'assistant sait faire.
-Le Markdown affiché brut : sur ta capture, la réponse contenait des ### et des ** au lieu de titres et de gras.
-Les documents dépliés par défaut : ta réponse à la question d’interface dit « repliés pour un utilisateur lambda », mais ta ToolCard les affiche dépliés.
+Le Markdown affiché brut : la réponse peut contenir des ### et des ** au lieu de titres et de gras.
+Les documents dépliés par défaut : On veux plutôt « repliés pour un utilisateur lambda et pas pour un utilisateur dont les documents sont au centre de la question », mais ToolCard les affiche dépliés quoiqu'il arrive.
 Critère de fin : trente secondes d'usage sans souris, rien n'agace.
 Question : les trois choses qui agacent encore.
 

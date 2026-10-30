@@ -7,7 +7,8 @@ import type { ChatMessage } from './api/chat/route';
 
 export default function Chat() {
   const [input, setInput] = useState('');
-  const { messages, sendMessage, status, stop } = useChat<ChatMessage>();
+  const { messages, sendMessage, status, stop, error, regenerate } = useChat<ChatMessage>();
+  const errorMessage = 'La réponse n’a pas pu être générée. Veuillez réessayer.';
 
   return (
     <main className="min-h-screen mx-auto flex max-w-xl flex-col gap-4 p-6">
@@ -30,11 +31,20 @@ export default function Chat() {
         </div>
       ))}
 
+      {status === 'error' && (
+        <div>
+          <p>{errorMessage}</p>
+          <button type="button" className="rounded border px-4" onClick={() => regenerate()}>
+            Réessayer
+          </button>
+        </div>
+      )}
+
       <form
         className="sticky bottom-0 bg-black py-4 mt-auto"
         onSubmit={(e) => {
           e.preventDefault();
-          if (status !== 'ready' || input.trim() === '') return;
+          if ((status !== 'ready' && status !== 'error') || input.trim() === '') return;
           sendMessage({ text: input });
           setInput('');
         }}
@@ -52,7 +62,7 @@ export default function Chat() {
             placeholder="Pose une question…"
             onChange={(e) => setInput(e.currentTarget.value)}
           />
-          {status === 'ready' ? (
+          {status === 'ready' || status === 'error' ? (
             <button type="submit" className="rounded border px-4">
               Envoyer
             </button>

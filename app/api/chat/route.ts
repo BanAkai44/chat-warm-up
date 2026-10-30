@@ -11,6 +11,7 @@ import {
 } from 'ai';
 import { google } from '@ai-sdk/google';
 import { z } from 'zod';
+import { mockModel } from './mock-model';
 
 const tools = {
   searchDocuments: tool({
@@ -19,6 +20,7 @@ const tools = {
     // Factice : délai simulé puis résultats en dur.
     execute: async () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
       return [
         {
           title: 'Guide de démarrage',
@@ -36,7 +38,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: google('gemini-3.5-flash'),
+    model: process.env.MOCK_MODEL ? mockModel : google('gemini-3.5-flash'),
     messages: await convertToModelMessages(messages),
     tools,
     stopWhen: isStepCount(5),
