@@ -17,18 +17,8 @@ const tools = {
   searchDocuments: tool({
     description: 'Recherche des documents pertinents pour une requête.',
     inputSchema: z.object({ query: z.string() }),
-    // Factice : délai simulé puis résultats en dur.
-    execute: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      return [
-        {
-          title: 'Guide de démarrage',
-          excerpt: 'Ce guide présente les étapes pour bien démarrer.',
-        },
-        { title: 'FAQ produit', excerpt: 'Réponses aux questions les plus fréquentes.' },
-      ];
-    },
+    // Factice : aucune source de documents branchée pour l'instant.
+    execute: async () => [] as { title: string; excerpt: string }[],
   }),
 };
 

@@ -102,12 +102,25 @@ donc on le pose sur un div enveloppe autour du `<Markdown>` seul (qui n'a pas
 de `className`). Un `<Markdown>` produit des blocs : le libellé devient un
 en-tête assumé. `?.` plutôt que `a && a.b()`.
 
-## T6 — Livraison (réduite) — EN COURS
+## T6 — Livraison (réduite) — FAIT
 
 Déploiement Vercel (plan Hobby, clé API dans les variables d'environnement),
 vérification en ligne. Pas de vidéo ni de diffusion : ce repo est un
 décrassage, pas une vitrine ; la vitrine sera le projet 1.
 Critère de fin : l'app tourne en ligne avec le vrai modèle (pas `MOCK_MODEL`).
+Modèle passé à `gemini-3.5-flash-lite` (quota gratuit plus large, compté par
+modèle et par projet).
+Appris : `.env.local` est ignoré par git, donc absent de Vercel ; la clé est
+saisie dans l'interface et injectée dans `process.env` à l'exécution de la
+fonction serverless. Une variable d'environnement est toujours une chaîne :
+`'0'` est truthy, donc tester l'existence de `MOCK_MODEL` l'activerait.
+`next build` (ce que lance Vercel) compile et vérifie les types de tout le
+projet, `next dev` compile à la demande : le build local est la répétition
+générale. `/` est pré-rendue (statique), `/api/chat` tourne à la demande.
+Un `npm install` lancé dans le mauvais dossier pollue la résolution des
+modules (import fantôme de `discord.js`). Le modèle a ignoré les documents
+hors sujet et répondu de lui-même : l'ancrage (citations) est un vrai sujet
+d'interface.
 
 ## Bilan de fin (à écrire avec le mentor)
 
