@@ -11,8 +11,19 @@ export const mockModel = new MockLanguageModelV4({
   doStream: async ({ prompt }) => {
     const lastMessage = prompt[prompt.length - 1];
 
+    // Messages "long" et "markdown" : réponse directe, sans outil.
+    const userText =
+      lastMessage.role === 'user'
+        ? lastMessage.content
+            .map((part) => (part.type === 'text' ? part.text : ''))
+            .join('')
+            .trim()
+        : '';
+    const isLong = userText === 'long';
+    const isMarkdown = userText === 'markdown';
+
     // 1re étape : le modèle demande l'outil.
-    if (lastMessage.role !== 'tool') {
+    if (lastMessage.role !== 'tool' && !isLong && !isMarkdown) {
       return {
         stream: simulateReadableStream({
           initialDelayInMs: 500,
@@ -30,10 +41,17 @@ export const mockModel = new MockLanguageModelV4({
     }
 
     // 2e étape : il a reçu le résultat (ou l'erreur) de l'outil, il répond mot par mot.
-    const words = 'Voici une réponse simulée, sans appel à Gemini.'.split(' ');
+    const text = isLong
+      ? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
+          .repeat(9)
+          .slice(0, 1000)
+      : isMarkdown
+        ? '## Réponse en markdown\n\nVoici du **gras**, de l\'*italique* et du `code` inline.\n\n- Premier point\n- Deuxième point avec **emphase**\n- Troisième point\n\nFin de la réponse simulée.'
+        : 'Voici une réponse simulée, sans appel à Gemini.';
+    const words = text.split(' ');
     return {
       stream: simulateReadableStream({
-        chunkDelayInMs: 150,
+        chunkDelayInMs: isLong ? 30 : 150,
         chunks: [
           { type: 'text-start', id: 'text-1' },
           ...words.map((word) => ({

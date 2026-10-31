@@ -79,7 +79,7 @@ Gemini (429) : chaque étape de la boucle compte comme une requête. Faux modèl
 `MockLanguageModelV4` (`app/api/chat/mock-model.ts`, activé par `MOCK_MODEL`
 dans `.env.local`) pour tester sans appeler Gemini.
 
-## T5 — Finition minimale (optionnel) — EN COURS
+## T5 — Finition minimale (optionnel) — FAIT
 
 Défilement automatique vers le bas pendant le streaming ; Entrée envoie,
 Maj+Entrée fait un retour à la ligne (passer l'input en textarea) ; message
@@ -88,6 +88,19 @@ Le Markdown affiché brut : la réponse peut contenir des ### et des ** au lieu 
 Les documents dépliés par défaut : On veux plutôt « repliés pour un utilisateur lambda et pas pour un utilisateur dont les documents sont au centre de la question », mais ToolCard les affiche dépliés quoiqu'il arrive.
 Critère de fin : trente secondes d'usage sans souris, rien n'agace.
 Question : les trois choses qui agacent encore.
+Réponse : pas de focus au chargement (corrigé : `autoFocus`) ; focus perdu
+après Stop ou la suggestion d'accueil (corrigé : ref + `focus()` dans le
+handler) ; dans un long fil, atteindre un document au Tab est pénible. Restent
+aussi : défilement forcé pendant qu'on lit plus haut, pas d'Échap pour Stop.
+Appris : un élément démonté emporte le focus avec lui (retour sur `<body>`) ;
+`autoFocus` ne joue qu'au montage, sinon focus impératif via une ref, dans le
+handler de l'événement plutôt que dans un `useEffect`. Preflight (le reset de
+Tailwind) retire les styles par défaut des titres et listes ; le plugin
+`@tailwindcss/typography` (`@plugin` dans le CSS en v4) les rend avec `prose`,
+`dark:prose-invert` pour le fond sombre. `prose` stylise tous les descendants,
+donc on le pose sur un div enveloppe autour du `<Markdown>` seul (qui n'a pas
+de `className`). Un `<Markdown>` produit des blocs : le libellé devient un
+en-tête assumé. `?.` plutôt que `a && a.b()`.
 
 ## T6 — Livraison
 

@@ -18,13 +18,16 @@ export function ToolCard({ query, state, output }: Props) {
       {state === 'output-error' && <p>Souci outil</p>}
 
       {state === 'output-available' && output && (
-        <ul className="mt-2 space-y-1">
-          {output.map((doc, j) => (
-            <li key={j}>
-              <strong>{doc.title}</strong> — {doc.excerpt}
-            </li>
-          ))}
-        </ul>
+        <details className="mt-2">
+          <summary>{output.length} documents trouvés</summary>
+          <ul className="mt-2 space-y-1">
+            {output.map((doc, j) => (
+              <li key={j}>
+                <strong>{doc.title}</strong> — {doc.excerpt}
+              </li>
+            ))}
+          </ul>
+        </details>
       )}
     </div>
   );
