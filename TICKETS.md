@@ -102,12 +102,12 @@ donc on le pose sur un div enveloppe autour du `<Markdown>` seul (qui n'a pas
 de `className`). Un `<Markdown>` produit des blocs : le libellé devient un
 en-tête assumé. `?.` plutôt que `a && a.b()`.
 
-## T6 — Livraison
+## T6 — Livraison (réduite) — EN COURS
 
 Déploiement Vercel (plan Hobby, clé API dans les variables d'environnement),
-vérification en ligne, vidéo de 15 secondes montrant le streaming, un Stop et
-l'outil au travail.
-Critère de fin : un lien public et une vidéo.
+vérification en ligne. Pas de vidéo ni de diffusion : ce repo est un
+décrassage, pas une vitrine ; la vitrine sera le projet 1.
+Critère de fin : l'app tourne en ligne avec le vrai modèle (pas `MOCK_MODEL`).
 
 ## Bilan de fin (à écrire avec le mentor)
 

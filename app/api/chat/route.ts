@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: process.env.MOCK_MODEL ? mockModel : google('gemini-3.5-flash'),
+    model: process.env.MOCK_MODEL ? mockModel : google('gemini-3.5-flash-lite'),
     messages: await convertToModelMessages(messages),
     tools,
     stopWhen: isStepCount(5),
